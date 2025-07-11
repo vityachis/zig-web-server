@@ -5,7 +5,12 @@ pub fn pMessage(message: []const u8) void {
 }
 
 pub fn pDebug(context: []const u8, variable: anytype) void {
-    std.debug.print("[DEBUG] {s}: {any}\n", .{context, variable});
+    const t = @TypeOf(variable);
+    if (t == []const u8 or t == []u8) {
+        std.debug.print("[DEBUG] {s}: {s}\n", .{context, variable});
+    } else {
+        std.debug.print("[DEBUG] {s}: {any}\n", .{context, variable});
+    }
 }
 
 pub fn pInfo(context: []const u8, message: []const u8) void {
