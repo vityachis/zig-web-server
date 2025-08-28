@@ -1,6 +1,6 @@
 const std = @import("std");
-const u = @import("../models/User.zig");
+const userModel = @import("../models/User.zig").User;
 
-pub fn findOne(id: u32) !u.User {
+pub fn findOne(id: u32) !userModel {
     _ = id;
 }

@@ -1,6 +1,6 @@
 const std = @import("std");
-const d = @import("debug.zig");
-const app = @import("app.zig");
+const d = @import("core/debug.zig");
+const app = @import("core/app.zig");
 
 pub fn main() !void {
     d.pMessage("============= RUN =============");
