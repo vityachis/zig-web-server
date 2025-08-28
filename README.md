@@ -3,6 +3,7 @@
 ### Required:
 - [zig](https://github.com/ziglang/zig) >= 0.15.1
 - [zls](https://github.com/zigtools/zls) >= 0.15.0
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
 ### Run application: `make build run`
 
