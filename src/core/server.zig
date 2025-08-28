@@ -100,13 +100,24 @@ fn sendStatic(path: []const u8, req: *http.Server.Request) void {
     };
     defer staticFile.close();
 
-    var buffer: [16384]u8 = undefined;
-    _ = staticFile.readAll(&buffer) catch |err| {
+    const fileSize = staticFile.getEndPos() catch |err| {
+        d.pError("staticFile.getEndPos()", err);
+        return;
+    };
+
+    const buffer = allocator.alloc(u8, fileSize) catch |err| {
+        d.pError("allocator.alloc()", err);
+        return;
+    };
+
+    defer allocator.free(buffer);
+
+    const bytes = staticFile.readAll(buffer) catch |err| {
         d.pError("staticFile.readAll()", err);
         return;
     };
 
-    req.respond(&buffer, http.Server.Request.RespondOptions{}) catch |err| {
+    req.respond(buffer[0..bytes], http.Server.Request.RespondOptions{}) catch |err| {
         d.pError("req.respond()", err);
         return;
     };
