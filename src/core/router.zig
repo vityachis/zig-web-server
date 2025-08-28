@@ -5,6 +5,8 @@ const Route = @import("../base/Route.zig").Route;
 
 pub fn run(req: *http.Server.Request) !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    defer _ = gpa.deinit();
+
     const allocator = gpa.allocator();
     var list = std.ArrayList(Route).init(allocator);
     defer list.deinit();

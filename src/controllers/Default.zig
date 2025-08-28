@@ -19,6 +19,19 @@ pub const Default = struct {
     }
 
     pub fn list(req: *http.Server.Request) !void {
-        try req.respond("Hello, Zig!", std.http.Server.Request.RespondOptions{});
+        var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+        defer _ = gpa.deinit();
+
+        var indexFile = try std.fs.cwd().openFile("./templates/default/index.html", .{});
+        defer indexFile.close();
+
+        const allocator = gpa.allocator();
+        const fileSize = try indexFile.getEndPos();
+        const buffer = try allocator.alloc(u8, fileSize);
+        defer allocator.free(buffer);
+
+        const bytes = try indexFile.readAll(buffer);
+
+        try req.respond(buffer[0..bytes], std.http.Server.Request.RespondOptions{});
     }
 };
